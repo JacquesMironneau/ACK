@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Needed in order to use the NetworkTask
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 if (nt != null)
                  nt.sendData(Messages.ALL);
+                nt.sendData(Messages.KILL, "192.168.0.5", "AA:BB:CC:DD:EE");
             }
         });
         this.start.setOnClickListener(new View.OnClickListener() {

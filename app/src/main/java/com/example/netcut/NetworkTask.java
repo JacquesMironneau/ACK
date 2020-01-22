@@ -19,7 +19,10 @@ public class NetworkTask extends AsyncTask
     private Socket socket;
     private BufferedReader nis;
     private BufferedWriter nos;
+
+    //Singleton
     private static NetworkTask nt = null;
+
 
     public static NetworkTask getInstance()
     {
@@ -60,6 +63,8 @@ public class NetworkTask extends AsyncTask
             {
                 Log.i("DataReceived"  ,received);
                 publishProgress(received);
+                //TODO call the UI thread and edit the text
+                editText(received);
             }
 
 
@@ -83,6 +88,8 @@ public class NetworkTask extends AsyncTask
 
     public void sendData(Messages msg)
     {
+        if (this.socket == null) return;
+
         try {
             Log.i("SendData", "Writing to the socket !");
             this.nos.write(msg.ordinal());
@@ -95,9 +102,33 @@ public class NetworkTask extends AsyncTask
         }
     }
 
+
+    public void sendData(Messages msg, String ip, String mac)
+    {
+        if (this.socket == null) return;
+
+        try {
+            Log.i("SendData", "Writing to the socket !");
+
+            this.nos.write(msg.ordinal() + " " + ip + " " + mac);
+            this.nos.flush();
+            Log.i("SendData", "You walking ani");
+
+        } catch (IOException e)
+        {
+            Log.i("SendData", "Failed to send data (+a string content)");
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onProgressUpdate(Object[] values)
     {
         Log.i("Progress", "Something is happening somehow");
+    }
+
+    private void editText(String content)
+    {
+
     }
 }
